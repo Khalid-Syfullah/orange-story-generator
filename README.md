@@ -26,7 +26,9 @@ python3 skills/orange-story-generator/scripts/queue.py status
 python3 skills/orange-story-generator/scripts/queue.py next
 ```
 
-The 27-job queue runs paintings/compositions, individual motion shots, the WebGL foundation, chapter transitions, and final review. Results go in `outputs/`; progress goes in `.local/run-state.json`. Both are ignored by Git, along with credentials and build dependencies. Keep a separate backup of generated outputs.
+The 27-job queue runs paintings/compositions, individual motion shots, the WebGL foundation, chapter transitions, and final review. Every completed job creates a tracked `progress/<id>.json` report. The agent commits it with a clear title and description, pushes the phase changes, and verifies the remote commit before advancing. A failed push pauses the queue without repeating generation. See [phase checkpoints](skills/orange-story-generator/references/git-checkpoints.md).
+
+Raw results go in `outputs/`; local execution state goes in `.local/run-state.json`. Both are ignored by Git, along with credentials and build dependencies. The smaller phase reports and project source are published. Keep a separate backup of generated outputs.
 
 Run the local reliability checks with:
 

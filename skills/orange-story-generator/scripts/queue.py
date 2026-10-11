@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import re
+import subprocess
 import sys
 from datetime import datetime, timezone
 
@@ -87,6 +88,8 @@ def load(project):
 def next_job(state, jobs):
     for job in jobs:
         entry = state['jobs'][job['id']]
+        if entry['status'] == 'done' and not entry.get('checkpoint'):
+            raise ValueError(f"{job['id']} needs a commit and verified push before the next phase.")
         if entry['status'] != 'done':
             if entry['status'] != 'pending':
                 raise ValueError(f"{job['id']} is {entry['status']}; reconcile its result before advancing.")
@@ -96,13 +99,60 @@ def next_job(state, jobs):
     return None
 
 
+def phase_report(project, job, entry, artifact):
+    checksum = hashlib.sha256()
+    with artifact.open('rb') as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b''):
+            checksum.update(chunk)
+    relative = Path(entry['artifact'])
+    data = dict(phase=job['id'], title=job['title'], kind=job['kind'],
+                artifact=relative.name if relative.is_absolute() else str(relative),
+                artifact_sha256=checksum.hexdigest(), artifact_bytes=artifact.stat().st_size,
+                validation=entry['review'], completed_at=entry['completed_at'])
+    path = project / 'progress' / (job['id'] + '.json')
+    write_state(path, data)
+    entry['phase_report'] = str(path.relative_to(project))
+    entry['phase_report_sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def checkpoint(project, entry, commit, remote, branch):
+    def git(*arguments):
+        environment = dict(os.environ, GIT_TERMINAL_PROMPT='0')
+        return subprocess.check_output(['git', *arguments], cwd=project,
+                                       env=environment, stderr=subprocess.PIPE).decode().strip()
+    if entry['status'] != 'done':
+        raise ValueError('Complete and inspect the phase before creating its checkpoint.')
+    sha = git('rev-parse', '--verify', commit + '^{commit}')
+    message = git('show', '-s', '--format=%B', sha)
+    title, separator, description = message.partition('\n\n')
+    if not separator or len(title.strip()) < 8 or len(description.strip()) < 20:
+        raise ValueError('The phase commit needs a clear title and a substantive description.')
+    report = entry['phase_report']
+    # Read the committed report, not merely the current working file.
+    committed = subprocess.check_output(['git', 'show', sha + ':' + report], cwd=project,
+                                         stderr=subprocess.PIPE)
+    if hashlib.sha256(committed).hexdigest() != entry['phase_report_sha256']:
+        raise ValueError('The commit does not contain the reviewed phase report.')
+    head = git('ls-remote', remote, 'refs/heads/' + branch)
+    if not head:
+        raise ValueError('The remote branch does not exist; push the phase commit first.')
+    remote_sha = head.split()[0]
+    if remote_sha != sha:
+        git('fetch', remote, 'refs/heads/' + branch)
+        git('merge-base', '--is-ancestor', sha, remote_sha)
+    entry['checkpoint'] = dict(commit=sha, title=title, description=description,
+                               remote=remote, branch=branch, remote_head=remote_sha,
+                               verified_at=now())
+    return entry['checkpoint']
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--project', type=Path, default=Path.cwd())
     commands = parser.add_subparsers(dest='command', required=True)
     for name in ['init', 'status', 'next']:
         commands.add_parser(name)
-    for name in ['begin', 'finish', 'fail', 'retry']:
+    for name in ['begin', 'finish', 'fail', 'retry', 'checkpoint']:
         child = commands.add_parser(name)
         child.add_argument('id')
         if name == 'finish':
@@ -111,6 +161,10 @@ def main(argv=None):
         if name == 'fail':
             child.add_argument('--reason', required=True)
             child.add_argument('--uncertain', action='store_true')
+        if name == 'checkpoint':
+            child.add_argument('--commit', required=True)
+            child.add_argument('--remote', default='origin')
+            child.add_argument('--branch', default='main')
     args = parser.parse_args(argv)
     project = args.project.resolve()
     lock = project / '.local/queue.lock'
@@ -150,6 +204,8 @@ def main(argv=None):
                 except ValueError:
                     artifact = str(artifact)
                 entry.update(status='done', artifact=artifact, review=args.note, completed_at=now())
+                phase_report(project, next(job for job in jobs if job['id'] == args.id),
+                             entry, project / artifact)
                 result = dict(id=args.id, **entry)
             elif args.command == 'fail':
                 if entry['status'] != 'running':
@@ -157,11 +213,13 @@ def main(argv=None):
                 entry.update(status='uncertain' if args.uncertain else 'failed',
                              reason=args.reason, stopped_at=now())
                 result = dict(id=args.id, **entry)
-            else:
+            elif args.command == 'retry':
                 if entry['status'] != 'failed':
                     raise ValueError('Retry requires a definite failure; reconcile running/uncertain requests first.')
                 entry.update(status='pending', retry_requested_at=now())
                 result = dict(id=args.id, **entry)
+            else:
+                result = checkpoint(project, entry, args.commit, args.remote, args.branch)
             write_state(path, state)
         print(json.dumps(result, indent=2, ensure_ascii=False))
 
@@ -169,6 +227,6 @@ def main(argv=None):
 if __name__ == '__main__':
     try:
         main()
-    except (ValueError, KeyError, FileNotFoundError) as error:
+    except (ValueError, KeyError, FileNotFoundError, subprocess.CalledProcessError) as error:
         print('Queue stopped: ' + str(error), file=sys.stderr)
         sys.exit(2)
