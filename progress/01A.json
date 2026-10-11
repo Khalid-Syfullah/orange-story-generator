@@ -1,0 +1,10 @@
+{
+  "phase": "01A",
+  "title": "The orange signal",
+  "kind": "painting",
+  "artifact": "outputs/paintings/01A.png",
+  "artifact_sha256": "aee55335eb6fa81320baf384152ce34c2272e9e4950f2a3402335882f7e4709b",
+  "artifact_bytes": 2704722,
+  "validation": "Generated with ChatGPT native image_gen__imagegen. Inspected the saved painting: spherical orange with attached leaf and stable supporting fingers; coherent face, raised arm, cloth and grounded feet; solid Corinthian column; distinct lower cast including deep-green artisan; upper-left light and generous blue headline area. Prompt addition establishes the recurring cast within a single 16:9 landscape composition. No painted type or signal effects.",
+  "completed_at": "2026-10-11T09:42:42.642676+00:00"
+}
