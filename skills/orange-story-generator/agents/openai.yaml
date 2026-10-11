@@ -1,0 +1,4 @@
+interface:
+  display_name: "Orange Story Generator"
+  short_description: "Run Orange paintings and motion prompts in sequence"
+  default_prompt: "Use $orange-story-generator to run the Orange story prompts one by one from this project and resume from the saved progress."
