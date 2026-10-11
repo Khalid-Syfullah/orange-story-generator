@@ -1,6 +1,6 @@
-# ChatGPT native media jobs
+# ChatGPT native paintings and Google video jobs
 
-The user selected native ChatGPT generation for this project. The queue helper tracks jobs; the Codex agent makes the actual native tool calls. Keep the existing 27-job catalog and ledger intact when changing tools.
+The user selected ChatGPT native images and connected Google video generation for this project. The queue helper tracks jobs; the Codex agent makes the actual generation tool calls. Keep the existing 27-job catalog and ledger intact when changing tools.
 
 ## Paintings
 
@@ -12,17 +12,16 @@ Use the available `imagegen` skill and built-in `image_gen.imagegen` capability 
 4. Use the returned local asset path when available. Copy the approved file into `outputs/paintings/<job-id>.<actual-extension>` and inspect that saved file. Built-in assets may be saved under the Codex generated-images directory; do not pass a made-up destination argument or invent an output path. If no local asset can be retrieved, preserve the result and report that saving is blocked; do not mark the phase complete or regenerate merely to obtain a filename.
 5. Record the actual tool and inspection in the phase note/report, then follow the existing finish, commit, push, and checkpoint procedure. Carry saved approved references into the next job. For 03A, preserve the exact 02C pixels as an inset in a CSS/WebGL composition with a separate frame plate rather than asking the image model to redraw 02C.
 
-## Motion
+## Motion with the connected Google tool
 
-**Capability check, October 11, 2026:** this session exposes native image generation but no native generative video tool. Third-party video connectors and timeline renderers do not satisfy this provider choice. Official OpenAI documentation also lists the old Sora 2 models and Videos API as removed on September 24, 2026, with no replacement listed. Do not configure those retired endpoints or infer native app availability from old Sora examples.
+Discover an actually exposed Google video-generation tool with image-to-video support, such as the connected Veo tool. Connection labels in configuration are not callable tool names and do not establish that a server is enabled or authenticated. Inspect the loaded schema and required access before `begin`; do not invent tool names, project IDs, buckets, or arguments. Use the tool's documented upload/asset handling when it requires remote input and pass only the approved project painting.
 
-On every resumed run, inspect the currently exposed tools. If a native image-to-video tool is actually available, use its current schema and supported inputs, duration, aspect ratio, and model options. Supply the approved `source_asset` painting and exact motion prompt; ask for one restrained shot, roughly six to eight seconds where supported, with no audio required. Preserve supported contact points, character identity, fruit attachment, and natural cloth/foliage timing. Inspect the whole clip, including first/last frames and settling, before accepting it.
+Supply the approved `source_asset` painting and exact motion prompt. Use the tool's current supported inputs, duration, aspect ratio, and model options; request one restrained shot, roughly six to eight seconds where supported, with no audio required. Preserve contact points, character identity, fruit attachment, and natural cloth/foliage timing. Inspect the whole clip, including first/last frames and settling, before accepting it. Save the actual returned clip under `outputs/motion/` and record Google generation provenance in the phase note/report.
 
-If no suitable native tool is available, stop at the first pending motion job before `begin`. Report the job ID, approved source image, and prompt location. Leave later jobs pending and preserve all completed painting checkpoints. Never label a camera pan over a still, an external-provider clip, a prompt file, or an empty placeholder as native generated video. Resume automatically only after the required capability exists or the user changes the provider choice. If the user explicitly supplies an already generated native clip, inspect it and record its supplied provenance before completing the matching job; do not claim it was generated in this session.
+If the Google tool is unavailable or unauthenticated, stop at the first pending motion job before `begin`. Report the job ID, approved source image, prompt location, and concrete missing access. Leave later jobs pending and preserve all completed painting checkpoints. Never label a camera pan over a still, a prompt file, or an empty placeholder as generated video. On resume, recheck the connection and continue the pending job when access is available.
 
-Submitted operations with uncertain outcomes follow the queue's existing reconciliation rule. Save operation metadata locally, keep private URLs out of published progress reports, and avoid automatic duplicate submissions.
+Use an exposed polling/status tool to await a submitted Google operation when applicable. Save its operation identifier and metadata locally, keep private URLs and credentials out of published progress reports, and avoid automatic duplicate submissions after uncertain outcomes. Follow the queue's existing reconciliation, inspection, commit, push, and checkpoint rules.
 
-## Official references
+## Image reference
 
-- [Image generation in ChatGPT and Codex](https://learn.chatgpt.com/docs/image-generation): native image workflow, reference images, and usage.
-- [OpenAI API deprecations](https://developers.openai.com/api/docs/deprecations): dated Sora 2 / Videos API retirement notice. Recheck current official documentation if a future session exposes native video generation.
+- [Image generation in ChatGPT and Codex](https://learn.chatgpt.com/docs/image-generation): native image workflow, reference images, and usage. Google video arguments must come from the connected tool's current schema rather than from this image documentation.

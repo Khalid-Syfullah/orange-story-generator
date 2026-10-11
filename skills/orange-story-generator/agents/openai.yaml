@@ -1,4 +1,4 @@
 interface:
   display_name: "Orange Story Generator"
   short_description: "Run Orange paintings and motion prompts in sequence"
-  default_prompt: "Use $orange-story-generator to run the Orange story prompts one by one from this project and resume from the saved progress."
+  default_prompt: "Use $orange-story-generator to develop this project one prompt at a time from saved progress, using ChatGPT native images and the connected Google video-generation tool, inspecting each result, and committing with a title and description and pushing after every phase; pause affected motion jobs if Google access is unavailable."

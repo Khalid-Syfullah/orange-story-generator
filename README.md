@@ -12,13 +12,13 @@ Open `orange-story-generator.code-workspace` in VS Code. The original reference 
 
 Invoke the installed skill from this project:
 
-> Use $orange-story-generator to run this project's prompts automatically one by one. Resume from saved progress, use ChatGPT's built-in image generation and native video generation when available, inspect each result, and commit and push after each phase. Pause at a motion job if native video generation is unavailable, then resume when access exists.
+> Use $orange-story-generator to develop this project's four-section Orange story by running its prompts automatically one by one. Resume from saved progress, use ChatGPT's native image generation for paintings and the connected Google video-generation tool for motion, and inspect each result. Build and verify the WebGL scenes, transitions, and animations using the approved media. Create a Git commit with a clear title and description and push it after every phase. If the Google video tool is unavailable or unauthenticated, pause at the affected motion job without losing progress, then resume when access is restored.
 
 This is an agent-driven automation: the skill guides Codex through real tool calls and implementation jobs. The Python helper tracks progress and prevents duplicate submissions; it does not generate media by itself. Skill creation does not start the paid generation run.
 
-Paintings use the built-in `image_gen` tool, one image at a time, with approved paintings carried forward as references. No Google Cloud project, storage bucket, or API key is needed for this image workflow. See [native media handling](skills/orange-story-generator/references/native-media.md).
+Paintings use the built-in `image_gen` tool, one image at a time, with approved paintings carried forward as references. No Google Cloud project, storage bucket, or API key is needed for this image workflow. See [image and video handling](skills/orange-story-generator/references/native-media.md).
 
-Native video generation is **not exposed in the current session** (checked October 11, 2026). The nine motion jobs retain their prompts and approved painting dependencies, but pause before submission until a native video tool is available. The agent checks capabilities again on each resumed run. It must not substitute another provider, an API, or still-image zoom clips. Website implementation follows the approved motion jobs; this configuration update does not generate assets or complete the site.
+Motion uses the connected Google video-generation tool with image-to-video support, using each approved painting as its source. The agent checks the exposed tool schema and authentication on every resumed run; this provider selection alone does not confirm a working connection. If access is missing, the affected motion job stays pending. Website implementation follows the approved media phases. Updating this startup prompt does not start generation.
 
 ## Preview the queue without generating anything
 
