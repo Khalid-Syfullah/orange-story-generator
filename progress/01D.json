@@ -1,0 +1,10 @@
+{
+  "phase": "01D",
+  "title": "Sharing the orange",
+  "kind": "painting",
+  "artifact": "outputs/paintings/01D.png",
+  "artifact_sha256": "054959e1180957ef6004ec97e6f923ed5c50cb587e0f291b0d7a2685e2fa2573",
+  "artifact_bytes": 2841786,
+  "validation": "ChatGPT native image_gen__imagegen using approved 01A cast reference. Saved image inspected: recurring ivory/vermilion woman and green artisan; two separate open supporting palms and natural sleeve/forearm connections; comparable intact orange halves with peel, white pith and radial citrus interiors; unobstructed central gap; no knife. Warm parchment light remains in stone and cloud highlights, with more cobalt background than requested; accepted for sky continuity. Added reference roles and landscape framing, no catalog change. Presentation/handover carries the story without a cutting beat.",
+  "completed_at": "2026-10-11T09:47:35.230927+00:00"
+}
