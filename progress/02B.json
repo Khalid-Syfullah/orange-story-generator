@@ -1,0 +1,10 @@
+{
+  "phase": "02B",
+  "title": "The craft and the drawing",
+  "kind": "painting",
+  "artifact": "outputs/paintings/02B.png",
+  "artifact_sha256": "77df87ed9519f959506c22bd6ee9bbbae0231b528ca3b6319a2349d8c5cbb0de",
+  "artifact_bytes": 3002865,
+  "validation": "ChatGPT native image_gen__imagegen with approved 02A reference. Saved close view inspected: same plan holder with both hands gripping opposite parchment edges; grey-bearded worker holds coherent mallet/chisel beside stone; same green artisan feet on supported scaffold; orange sphere leaf relief and classical base persist. Architectural drawing includes circular overhead plan and no words/numerals. Coherent upper-left light and painted materials. Added reference identity/framing clarification only; prompt catalog unchanged.",
+  "completed_at": "2026-10-11T09:50:32.692875+00:00"
+}
