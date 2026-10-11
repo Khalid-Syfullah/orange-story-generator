@@ -16,7 +16,7 @@ The four chapters are **The Model → The Work → The Terms → Questions**. In
 
 Recording times describe this particular scroll demonstration, not fixed website playback durations. Browser chrome, the desktop dock, and recording artifacts are not part of the artwork.
 
-Verified on the public site: React, direct WebGL/GLSL, Canvas overlays, MP4 video textures, and scroll-driven WebP sequences. The original painting and film generation software is not identified. Gemini Image and Veo are the chosen tools for the Orange production, not a claimed attribution for Pear.
+Verified on the public site: React, direct WebGL/GLSL, Canvas overlays, MP4 video textures, and scroll-driven WebP sequences. The original painting and film generation software is not identified. Orange now uses ChatGPT's built-in image generation for paintings and requests native video generation when a suitable tool is exposed. Native video generation was unavailable in the working session on October 11, 2026; motion jobs pause until it becomes available. This choice does not attribute Pear's artwork to OpenAI. See [native media handling](../skills/orange-story-generator/references/native-media.md).
 
 ## 1. Master art-direction prompt
 

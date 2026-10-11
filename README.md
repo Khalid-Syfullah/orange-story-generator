@@ -12,11 +12,13 @@ Open `orange-story-generator.code-workspace` in VS Code. The original reference 
 
 Invoke the installed skill from this project:
 
-> Use $orange-story-generator to run this project's prompts automatically one by one. Resume from saved progress, use Gemini Image and Veo, inspect each result, then build and verify the four-chapter WebGL story and transitions.
+> Use $orange-story-generator to run this project's prompts automatically one by one. Resume from saved progress, use ChatGPT's built-in image generation and native video generation when available, inspect each result, and commit and push after each phase. Pause at a motion job if native video generation is unavailable, then resume when access exists.
 
 This is an agent-driven automation: the skill guides Codex through real tool calls and implementation jobs. The Python helper tracks progress and prevents duplicate submissions; it does not generate media by itself. Skill creation does not start the paid generation run.
 
-Google image/video tools must be connected and authenticated before media generation. See [Google prerequisites](skills/orange-story-generator/references/google-media.md). Missing access stops the affected job without claiming an image, video, or site was generated.
+Paintings use the built-in `image_gen` tool, one image at a time, with approved paintings carried forward as references. No Google Cloud project, storage bucket, or API key is needed for this image workflow. See [native media handling](skills/orange-story-generator/references/native-media.md).
+
+Native video generation is **not exposed in the current session** (checked October 11, 2026). The nine motion jobs retain their prompts and approved painting dependencies, but pause before submission until a native video tool is available. The agent checks capabilities again on each resumed run. It must not substitute another provider, an API, or still-image zoom clips. Website implementation follows the approved motion jobs; this configuration update does not generate assets or complete the site.
 
 ## Preview the queue without generating anything
 
